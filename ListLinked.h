@@ -1,7 +1,7 @@
 #ifndef LISTLINKED_H
 #define LISTLINKED_H
 #include <ostream>
-#include <stdexcept>  // para std::out_of_range
+#include <stdexcept>
 #include "List.h"
 #include "Node.h"
 
@@ -11,27 +11,24 @@ template <typename T>
 class ListLinked : public List<T> {
 
 private:
-    Node<T>* first;  // puntero al primer nodo
-    int n;           // número de elementos
+    Node<T>* first;
+    int n;
 
 public:
-    // 🔹 Constructor: lista vacía
     ListLinked() {
         first = nullptr;
         n = 0;
     }
 
-    // 🔹 Destructor: libera toda la memoria de los nodos
     ~ListLinked() {
         Node<T>* current = first;
         while (current != nullptr) {
-            Node<T>* aux = current->next; // guarda el siguiente nodo
-            delete current;               // libera el actual
-            current = aux;                // avanza
+            Node<T>* aux = current->next;
+            delete current;            
+            current = aux;   
         }
     }
 
-    // 🔹 Sobrecarga del operador []
     T operator[](int pos) {
         if (pos < 0 || pos >= n)
             throw out_of_range("Posición inválida");
@@ -43,7 +40,6 @@ public:
         return current->data;
     }
 
-    // 🔹 Insertar elemento en posición dada
     void insert(int pos, T e) override {
         if (pos < 0 || pos > n)
             throw out_of_range("Posición inválida");
@@ -60,17 +56,14 @@ public:
         n++;
     }
 
-    // 🔹 Añadir al final
     void append(T e) override {
         insert(n, e);
     }
 
-    // 🔹 Añadir al principio
     void prepend(T e) override {
         insert(0, e);
     }
 
-    // 🔹 Eliminar elemento por posición
     T remove(int pos) override {
         if (pos < 0 || pos >= n)
             throw out_of_range("Posición inválida");
@@ -97,12 +90,10 @@ public:
         return data;
     }
 
-    // 🔹 Obtener elemento en posición
     T get(int pos) override {
         return (*this)[pos];
     }
 
-    // 🔹 Buscar elemento
     int search(T e) override {
         Node<T>* current = first;
         int index = 0;
@@ -114,20 +105,17 @@ public:
             index++;
         }
 
-        return -1; // no encontrado
+        return -1; 
     }
 
-    // 🔹 Comprobar si está vacía
     bool empty() override {
         return n == 0;
     }
 
-    // 🔹 Devolver tamaño
     int size() override {
         return n;
     }
 
-    // 🔹 Sobrecarga del operador <<
     template <typename U>
     friend ostream& operator<<(std::ostream &out, const ListLinked<U> &list) {
         Node<U>* current = list.first;
